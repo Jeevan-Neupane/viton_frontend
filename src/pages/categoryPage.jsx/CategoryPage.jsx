@@ -3,11 +3,14 @@ import { useParams } from "react-router-dom";
 import { useFetchCatagoriesProductsQuery } from "../../store/store";
 import { CategoryPageMain } from "../../style/Container";
 import { CategoryProductList, ForYou, ToTop } from "../../components";
+import FemaleSelfProducts from "../../viton_comp/Ladies_dress";
 
 function CategoryPage() {
   const { name } = useParams();
   const { data, isFetching, isError, isLoading } =
     useFetchCatagoriesProductsQuery(name);
+
+  console.log("category page", data);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -20,8 +23,8 @@ function CategoryPage() {
         data={data?.products}
         isLoading={isFetching || isLoading}
       />
-      <ForYou />
-      <ToTop/>
+      {/* <ForYou /> */}
+      <ToTop />
     </CategoryPageMain>
   );
 }

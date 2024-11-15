@@ -19,6 +19,11 @@ export const CategoryText = styled(Link)`
   font-size:1.6rem;
 cursor: pointer;
 text-decoration:none;
+
+&:hover{
+  background-color:${props => props.theme.hover};
+  transition:all 0.3s ease;
+}
 `
 
 export const LoadingDiv = styled.div`
