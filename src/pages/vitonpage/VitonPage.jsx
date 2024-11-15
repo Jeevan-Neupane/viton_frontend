@@ -13,6 +13,7 @@ import ResultImage from "../../components/try_on/ResultImage";
 
 import Try_it_Buttton from "../../components/try_on/Try_it_Buttton";
 import TryItButton2 from "../../components/try_on/Try_it_Button_2";
+import StoredImages from "../../viton_comp/Stored_Img";
 
 function VitonPage() {
   let { category, id } = useParams();
@@ -23,21 +24,37 @@ function VitonPage() {
   const [result_img, setResultImg] = useState(null);
 
   const [isResultImgLoading, setIsResultImgLoading] = useState(false);
-  console.log("result_img", result_img);
+
+  // Load existing images from localStorage
+  useEffect(() => {
+    const storedImages = JSON.parse(localStorage.getItem("tryOnImages")) || [];
+    console.log("Stored images:", storedImages);
+  }, []);
+
+  const storeImagesInLocalStorage = (vton, garm, result) => {
+    const storedImages = JSON.parse(localStorage.getItem("tryOnImages")) || [];
+    const newImage = { vton_img: vton, garm_img: garm, result_img: result };
+    storedImages.push(newImage);
+    localStorage.setItem("tryOnImages", JSON.stringify(storedImages));
+  };
+
   useEffect(() => {
     if (data) {
       setGarmImg(data?.thumbnail);
     }
   }, [data]);
 
-  console.log(vton_img, garm_img);
-
+  useEffect(() => {
+    if (vton_img && garm_img && result_img) {
+      storeImagesInLocalStorage(vton_img, garm_img, result_img);
+    }
+  }, [vton_img, garm_img, result_img]);
+  console.log("viton", vton_img, garm_img, result_img);
   return (
     <VitonContainerOutside>
       <VitonContainerInside>
         <VitonLeftDiv>
           {!isFetching && <ClotheImage thumbnail={data?.thumbnail} />}
-
           <YourImage setVtonImg={setVtonImg} />
         </VitonLeftDiv>
 
@@ -61,6 +78,7 @@ function VitonPage() {
         setIsResultImgLoading={setIsResultImgLoading}
         setResultImg={setResultImg}
       />
+      <StoredImages />
     </VitonContainerOutside>
   );
 }

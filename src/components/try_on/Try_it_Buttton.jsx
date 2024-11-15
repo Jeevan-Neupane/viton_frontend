@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useProcessImageMutation } from "../../store/apis/vitonApi"; // Ensure path is correct
 import { ConfirmButton, ConfirmButtonDiv } from "./style";
-import axios from "axios";
 
 function Try_it_Buttton({
   vton_img,
@@ -13,6 +12,7 @@ function Try_it_Buttton({
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState(null);
 
+  console.log("vton_img", vton_img, garm_img);
   const [processImage] = useProcessImageMutation();
 
   const handleTryItClick = async () => {
@@ -33,30 +33,7 @@ function Try_it_Buttton({
       // Step 1: Send the request to the API and get the image response
       const response = await processImage(requestData).unwrap();
       console.log("API response:", response);
-
-      // Step 2: Convert the API response to a Blob for upload
-      const responseBlob = await fetch(response.image).then((res) =>
-        res.blob()
-      );
-      const processedImageFile = new File(
-        [responseBlob],
-        "processed-image.png",
-        { type: "image/png" }
-      );
-
-      // Step 3: Upload the image file to Cloudinary
-      const formData = new FormData();
-      formData.append("file", processedImageFile);
-      formData.append("upload_preset", "chat_app"); // Use your Cloudinary upload preset
-
-      const cloudinaryResponse = await axios.post(
-        "https://api.cloudinary.com/v1_1/chatappjeevanneupane/image/upload", // Replace with your Cloudinary URL
-        formData
-      );
-
-      // Step 4: Set the Cloudinary URL
-      setResultImg(cloudinaryResponse.data.secure_url);
-      console.log("Cloudinary URL:", cloudinaryResponse.data.secure_url);
+      setResultImg(response?.result[0]?.image);
     } catch (err) {
       console.error("Error during processing or Cloudinary upload:", err);
       setIsError(true);
