@@ -6,30 +6,30 @@ import Skeleton from "../skeleton/Skeleton";
 function HomeCategories() {
   let { data, isFetching } = useFetchAllCategoriesQuery();
 
- 
-  console.log("Home data", data);
+  // Filter the data to show only "mens-shirts" and "womens-dresses"
+  const filteredCategories = data?.filter(
+    (item) => item === "mens-shirts" || item === "womens-dresses"
+  );
+
   return !isFetching ? (
     <Container>
-      {data?.map((item) => {
+      {filteredCategories?.map((item) => {
+        // Conditional display text
+        const displayText = item === "mens-shirts" ? "Men Dress" : "Women Dress";
+        
         return (
-          <CategoryText
-            key={item}
-            to={`category/${item}`}
-          >
-            {item}
+          <CategoryText key={item} to={`category/${item}`}>
+            {displayText}
           </CategoryText>
         );
       })}
     </Container>
   ) : (
     <LoadingContainer>
-      {Array.from({ length: 20 }, (_, index) => {
+      {Array.from({ length: 2 }, (_, index) => {
         return (
           <LoadingDiv key={index}>
-            <Skeleton
-              height={4}
-              width={20}
-            />
+            <Skeleton height={4} width={20} />
           </LoadingDiv>
         );
       })}

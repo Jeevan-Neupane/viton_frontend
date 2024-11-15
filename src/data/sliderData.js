@@ -1,27 +1,31 @@
-import AddToCart from "../assets/banner/add_to_cart.svg";
+import ChooseAny from "../assets/choose_any.jpeg";
 import ShoppingApp from "../assets/banner/shopping_app.svg";
 import OnlineShopping from "../assets/banner/online_shopping.svg";
+import EasyShop from "../assets/easy_shop.jpeg";
+import MultipleChoice from "../assets/multiple_choice.jpeg";
 
 export const sliderItems = [
     {
-        id: 1,
-        img: AddToCart,
-        title: "SUMMER SALE",
-        desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
-        backgroundColor: "f5fafd",
-    },
-    {
         id: 2,
-        img: ShoppingApp,
-        title: "AUTUMN COLLECTION",
-        desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
+        img: ChooseAny,
+        title: "TRY BEFORE YOU BUY",
+        desc: "Try on clothes virtually, anytime.",
         backgroundColor: "fcf1ed",
     },
+    
+    {
+        id: 1,
+        img: MultipleChoice,
+        title: "VIRTUAL TRY-ON",
+        desc: "See how clothes fit before buying.",
+        backgroundColor: "f5fafd",
+    },
+
     {
         id: 3,
-        img: OnlineShopping,
-        title: "LOUNGEWEAR LOVE",
-        desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
+        img: EasyShop,
+        title: "SHOP FROM HOME",
+        desc: "Shop and try clothes in your space.",
         backgroundColor: "f5f0f4",
     },
 ];
