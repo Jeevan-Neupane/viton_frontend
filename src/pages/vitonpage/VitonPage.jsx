@@ -22,6 +22,8 @@ function VitonPage() {
   const [garm_img, setGarmImg] = useState(null);
   const [result_img, setResultImg] = useState(null);
 
+  const [isResultImgLoading, setIsResultImgLoading] = useState(false);
+  console.log("result_img", result_img);
   useEffect(() => {
     if (data) {
       setGarmImg(data?.thumbnail);
@@ -40,18 +42,24 @@ function VitonPage() {
         </VitonLeftDiv>
 
         <VitonRightDiv>
-          <ResultImage resultImg={result_img} />
+          <ResultImage
+            resultImg={result_img}
+            isResultImgLoading={isResultImgLoading}
+          />
         </VitonRightDiv>
       </VitonContainerInside>
       <Try_it_Buttton
         garm_img={garm_img}
         vton_img={vton_img}
         setResultImg={setResultImg}
+        setIsResultImgLoading={setIsResultImgLoading}
       />
       <TryItButton2
         backgroundUrl={vton_img}
         garmImgUrl={garm_img}
         garmentDesc='shirt '
+        setIsResultImgLoading={setIsResultImgLoading}
+        setResultImg={setResultImg}
       />
     </VitonContainerOutside>
   );

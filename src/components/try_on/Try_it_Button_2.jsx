@@ -1,28 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTryOnMutation } from "../../store/apis/vitonApi2"; // Ensure path is correct
 import { ConfirmButton, ConfirmButtonDiv } from "./style";
 
-function TryItButton2({ backgroundUrl, garmImgUrl, garmentDesc }) {
-  // Get the tryOn mutation hook from RTK Query
-  const [tryOn, { isLoading, isError, error }] = useTryOnMutation();
+function TryItButton2({
+  backgroundUrl,
+  garmImgUrl,
+  garmentDesc,
+  setIsResultImgLoading,
+  setResultImg,
+}) {
+  const [tryOn] = useTryOnMutation();
+  const [isLoading, setIsLoading] = useState(false); // Local loading state
+
+  const [error, setError] = useState(null); // Local error state
 
   const handleTryItClick = async () => {
     const requestData = {
       background_url: backgroundUrl,
       garm_img_url: garmImgUrl,
-      garment_des: garmentDesc, // Dynamically provided description
+      garment_des: garmentDesc,
       is_checked: true,
       is_checked_crop: true,
       denoise_steps: 20,
       seed: 0,
     };
 
+    setIsLoading(true); // Start loading
+    setIsResultImgLoading(true); // Start loading
+
+    setError(null); // Clear any previous error
     try {
-      // Step 1: Send the request to the API and get the response
       const response = await tryOn(requestData).unwrap();
       console.log("API Response:", response);
+
+      if (response) {
+        setResultImg(response.cloudinary_urls[0]);
+      }
     } catch (err) {
       console.error("Error during processing:", err);
+      setError(err);
+    } finally {
+      setIsLoading(false); // Stop loading
+      setIsResultImgLoading(false); // Stop loading
     }
   };
 
@@ -32,9 +51,9 @@ function TryItButton2({ backgroundUrl, garmImgUrl, garmentDesc }) {
         onClick={handleTryItClick}
         disabled={isLoading}
       >
-        {isLoading ? "Processing..." : "Try It"}
+        {isLoading ? "Processing..." : "Try It 2"}
       </ConfirmButton>
-      {isError && <div>Error: {error?.message || "An error occurred."}</div>}
+      {error && <div>Error: {error?.message || "An error occurred."}</div>}
     </ConfirmButtonDiv>
   );
 }

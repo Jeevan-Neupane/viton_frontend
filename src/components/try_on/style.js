@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 export const TryOnButtonDiv = styled(Link)`
 
@@ -108,11 +108,11 @@ export const LoadingScreen = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(255, 255, 255, 0.8);
   color: #555;
   font-size: 1.5rem;
   z-index: 10;
   border-radius: 10px;
+  background-color:blue;
 `;
 
 //Result Image
@@ -149,3 +149,28 @@ padding:1rem;
 color:${props => props.theme.text}; 
 cursor:pointer;
 `
+
+const shimmer = keyframes`
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: 200px 0;
+  }
+`;
+
+
+export const ShimmerEffect = styled.div`
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    #324d92 0%,      /* Main dark blue color */
+    #3e5ba6 20%,     /* Slightly lighter blue */
+    #324d92 40%,     /* Main dark blue */
+    #324d92 100%     /* Main dark blue */
+  );
+  background-size: 400px 100%;
+  animation: ${shimmer} 1.5s infinite linear;
+  border-radius: 8px; /* Matches the image border-radius */
+`;

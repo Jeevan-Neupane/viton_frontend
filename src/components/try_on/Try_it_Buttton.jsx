@@ -3,10 +3,17 @@ import { useProcessImageMutation } from "../../store/apis/vitonApi"; // Ensure p
 import { ConfirmButton, ConfirmButtonDiv } from "./style";
 import axios from "axios";
 
-function Try_it_Buttton({ vton_img, garm_img, setResultImg }) {
-  // Get the processImage mutation hook from RTK Query
-  const [processImage, { isLoading, isError, error }] =
-    useProcessImageMutation();
+function Try_it_Buttton({
+  vton_img,
+  garm_img,
+  setResultImg,
+  setIsResultImgLoading,
+}) {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [error, setError] = useState(null);
+
+  const [processImage] = useProcessImageMutation();
 
   const handleTryItClick = async () => {
     const requestData = {
@@ -17,6 +24,10 @@ function Try_it_Buttton({ vton_img, garm_img, setResultImg }) {
       image_scale: 2,
       seed: -1,
     };
+
+    setIsLoading(true); // Start loading
+    setIsResultImgLoading(true); // Notify parent component of loading state
+    setIsError(false); // Reset error state
 
     try {
       // Step 1: Send the request to the API and get the image response
@@ -48,6 +59,11 @@ function Try_it_Buttton({ vton_img, garm_img, setResultImg }) {
       console.log("Cloudinary URL:", cloudinaryResponse.data.secure_url);
     } catch (err) {
       console.error("Error during processing or Cloudinary upload:", err);
+      setIsError(true);
+      setError(err);
+    } finally {
+      setIsLoading(false); // End loading
+      setIsResultImgLoading(false); // Notify parent component of loading state
     }
   };
 
@@ -59,7 +75,7 @@ function Try_it_Buttton({ vton_img, garm_img, setResultImg }) {
       >
         {isLoading ? "Processing..." : "Try It"}
       </ConfirmButton>
-      {isError && <div>Error: {error.message}</div>}
+      {isError && <div>Error: {error?.message || "An error occurred"}</div>}
     </ConfirmButtonDiv>
   );
 }
