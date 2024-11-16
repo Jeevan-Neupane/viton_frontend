@@ -17,6 +17,7 @@ import { BiLogoProductHunt, BiSolidUser } from "react-icons/bi";
 import Cart from "./cart/Cart";
 import { useSelector } from "react-redux";
 import UserBox from "../userbox/UserBox";
+import { FaCamera } from "react-icons/fa";
 
 function Header() {
   const user = useSelector((state) => {
@@ -46,10 +47,10 @@ function Header() {
         <RightDiv>
           <ProductLink
             style={linkActive}
-            to='/products'
+            to='/real_camera_try'
           >
-            <BiLogoProductHunt />
-            Products
+            <FaCamera />
+            Camera Try
           </ProductLink>
           {!user ? (
             <>

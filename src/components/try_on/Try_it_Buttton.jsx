@@ -33,7 +33,19 @@ function Try_it_Buttton({
       // Step 1: Send the request to the API and get the image response
       const response = await processImage(requestData).unwrap();
       console.log("API response:", response);
-      setResultImg(response?.result[0]?.image);
+
+      // Extract image path from response
+      const imagePath = response?.result[0]?.image;
+      if (!imagePath) throw new Error("Image not found in response");
+
+      console.log(imagePath);
+
+      // Step 2: Upload image to Cloudinary
+      const cloudinaryResponse = await uploadToCloudinary(imagePath);
+      console.log("Cloudinary response:", cloudinaryResponse);
+
+      // Step 3: Update the state with Cloudinary URL
+      setResultImg(cloudinaryResponse.secure_url);
     } catch (err) {
       console.error("Error during processing or Cloudinary upload:", err);
       setIsError(true);
@@ -44,15 +56,44 @@ function Try_it_Buttton({
     }
   };
 
+  // Function to upload image to Cloudinary
+  const uploadToCloudinary = async (imagePath) => {
+    const formData = new FormData();
+    formData.append("file", imagePath); // Image path from API response
+    formData.append("upload_preset", "chat_app"); // Replace with your Cloudinary upload preset
+    formData.append("cloud_name", "chatappjeevanneupane"); // Replace with your Cloudinary cloud name
+
+    const response = await fetch(
+      `https://api.cloudinary.com/v1_1/chatappjeevanneupane/image/upload`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+    if (!response.ok) throw new Error("Failed to upload image to Cloudinary");
+    return await response.json();
+  };
+
   return (
     <ConfirmButtonDiv>
       <ConfirmButton
         onClick={handleTryItClick}
         disabled={isLoading}
       >
-        {isLoading ? "Processing..." : "Try It"}
+        {isLoading ? (
+          <div className='loading'>
+            <span>Processing...</span>
+            <div className='loader'></div>
+          </div>
+        ) : (
+          "Try It"
+        )}
       </ConfirmButton>
-      {isError && <div>Error: {error?.message || "An error occurred"}</div>}
+      {isError && (
+        <div className='errordiv'>
+          Error: {error?.message || "An error occurred"}
+        </div>
+      )}
     </ConfirmButtonDiv>
   );
 }

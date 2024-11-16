@@ -1,13 +1,18 @@
 import React from "react";
-import { ResultImageDiv, ResultImg, ShimmerEffect } from "./style";
+import { ResultImageDiv, ResultImg, ShimmerEffect, TimerDiv } from "./style";
+import LoadingTimer from "./CountDown";
 
 function ResultImage({ resultImg, isResultImgLoading }) {
-  
   console.log("result_img_component", resultImg);
   return (
     <ResultImageDiv>
       {isResultImgLoading ? (
-        <ShimmerEffect />
+        <>
+          <ShimmerEffect />
+          <TimerDiv>
+            <LoadingTimer />
+          </TimerDiv>
+        </>
       ) : (
         <ResultImg
           src={

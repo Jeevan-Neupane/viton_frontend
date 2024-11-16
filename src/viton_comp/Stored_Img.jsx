@@ -1,21 +1,45 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-// Styled components for the combined images with "+" sign between them
+// Styled components
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+`;
+
+const GridContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two columns */
+  gap: 2rem; /* Space between columns */
+  width: 100%;
+  padding: 2rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr; /* Single column for smaller screens */
+  }
+`;
+
 const ImageContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-top: 2rem;
-  justify-content: center; /* Center the images horizontally */
-  gap: 1rem; /* Space between elements */
-  margin-top: 2rem;
+  justify-content: center; /* Center images horizontally */
+  gap: 1rem; /* Space between images */
+  margin-top: 2rem; /* Space between rows */
 `;
 
 const ImageWrapper = styled.div`
-  width: 40rem; /* Set a fixed width for images */
-  height: 50rem; /* Set a fixed height for images */
+  width: 15rem; /* Adjusted width for column layout */
+  height: 20rem; /* Adjusted height for column layout */
   position: relative;
+  cursor: pointer;
+
+  @media (max-width: 768px) {
+    width: 10rem; /* Adjust width for smaller screens */
+    height: 15rem; /* Adjust height for smaller screens */
+  }
 `;
 
 const BaseImage = styled.img`
@@ -23,9 +47,6 @@ const BaseImage = styled.img`
   height: 100%;
   object-fit: contain;
   border-radius: 1rem;
-  object-fit: contain;
-
-  object-position: center; /* Center the image */
 `;
 
 const OverlayImage = styled.img`
@@ -35,26 +56,99 @@ const OverlayImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-
-  opacity: 0.7; /* Adjust opacity for blending effect */
-`;
-
-const PlusSign = styled.div`
-  font-size: 3rem;
-  color: #333;
-  font-weight: bold;
+  opacity: 0.7; /* Blending effect */
 `;
 
 const ResultImage = styled.img`
-  width: 40rem;
-  height: 50rem;
-  object-fit: cover;
-  border-radius: 1rem;
+  width: 15rem;
+  height: 20rem;
   object-fit: contain;
+  border-radius: 1rem;
+
+  @media (max-width: 768px) {
+    width: 10rem;
+    height: 15rem;
+  }
+`;
+
+const PlusSign = styled.div`
+  font-size: 2rem;
+  color: #333;
+  font-weight: bold;
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem; /* Adjust font size for smaller screens */
+  }
+`;
+
+const Header = styled.h2`
+  margin-top: 2rem;
+  font-size: 2rem;
+  text-align: center;
+`;
+
+const NoImagesMessage = styled.p`
+  font-size: 1.2rem;
+  color: #666;
+  margin-top: 2rem;
+`;
+
+// Modal styles
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+`;
+
+const ModalContent = styled.div`
+  max-width: 80%;
+  max-height: 80%;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 1rem;
+    object-fit: contain; /* Maintain aspect ratio */
+    object-position: center; /* Center the image */
+  }
+
+  @media (max-width: 768px) {
+    max-width: 95%;
+    max-height: 95%;
+  }
+`;
+
+const CloseButton = styled.button`
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background-color: #e63946;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #d62828;
+  }
 `;
 
 const StoredImages = () => {
   const [storedImages, setStoredImages] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null); // Modal state
 
   // Load images from localStorage on component mount
   useEffect(() => {
@@ -63,42 +157,64 @@ const StoredImages = () => {
     setStoredImages(imagesFromStorage);
   }, []);
 
+  const handleDelete = (vtonImg) => {
+    const updatedImages = storedImages.filter(
+      (image) => image.vton_img !== vtonImg
+    );
+
+    setStoredImages(updatedImages); // Update state
+    localStorage.setItem("tryOnImages", JSON.stringify(updatedImages.reverse)); // Update localStorage
+  };
+
   return (
-    <div>
-      <h2
-        style={{
-          marginTop: "2rem",
-        }}
-      >
-        Previously Stored Images
-      </h2>
+    <Container>
+      <Header>Previously Stored Images</Header>
       {storedImages.length > 0 ? (
-        storedImages.map((image, index) => (
-          <ImageContainer key={index}>
-            <ImageWrapper>
-              <BaseImage
-                src={image.vton_img}
-                alt={`Virtual Try-On ${index + 1}`}
-              />
-            </ImageWrapper>
-            <PlusSign>+</PlusSign>
-            <ImageWrapper>
-              <OverlayImage
-                src={image.garm_img}
-                alt={`Garment ${index + 1}`}
-              />
-            </ImageWrapper>
-            <PlusSign>=</PlusSign>
-            <ResultImage
-              src={image.result_img}
-              alt={`Result ${index + 1}`}
-            />
-          </ImageContainer>
-        ))
+        <GridContainer>
+          {storedImages.map((image, index) => (
+            <ImageContainer key={index}>
+              <ImageWrapper onClick={() => setSelectedImage(image.vton_img)}>
+                <BaseImage
+                  src={image.vton_img}
+                  alt={`Virtual Try-On ${index + 1}`}
+                />
+              </ImageWrapper>
+              <PlusSign>+</PlusSign>
+              <ImageWrapper onClick={() => setSelectedImage(image.garm_img)}>
+                <OverlayImage
+                  src={image.garm_img}
+                  alt={`Garment ${index + 1}`}
+                />
+              </ImageWrapper>
+              <PlusSign>=</PlusSign>
+              <ImageWrapper onClick={() => setSelectedImage(image.result_img)}>
+                <ResultImage
+                  src={image.result_img}
+                  alt={`Result ${index + 1}`}
+                />
+              </ImageWrapper>
+            </ImageContainer>
+          ))}
+        </GridContainer>
       ) : (
-        <p>No images stored yet.</p>
+        <NoImagesMessage>No images stored yet.</NoImagesMessage>
       )}
-    </div>
+
+      {/* Modal */}
+      {selectedImage && (
+        <ModalOverlay onClick={() => setSelectedImage(null)}>
+          <ModalContent onClick={(e) => e.stopPropagation()}>
+            <img
+              src={selectedImage}
+              alt='Full Screen'
+            />
+            <CloseButton onClick={() => setSelectedImage(null)}>
+              Close
+            </CloseButton>
+          </ModalContent>
+        </ModalOverlay>
+      )}
+    </Container>
   );
 };
 

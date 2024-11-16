@@ -13,19 +13,37 @@ function CategoryPage() {
 
   console.log("category page", data);
 
+  console.log(name);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [name]);
   return (
     <CategoryPageMain>
-      <h1> {name.toUpperCase()}</h1>
-      <h2>Total:{data?.total}</h2>
+      <h1
+        style={{
+          paddingBottom: "1rem",
+        }}
+      >
+        {" "}
+        {name.toUpperCase()}
+      </h1>
+      {name !== "mens-shirts" && <WomenDressTop />}
+
+      {name !== "mens-shirts" && (
+        <h1
+          style={{
+            paddingBottom: "1rem",
+          }}
+        >
+          Full Dresses
+        </h1>
+      )}
+
       <CategoryProductList
         data={data?.products}
         isLoading={isFetching || isLoading}
       />
-
-      <WomenDressTop />
 
       {/* <ForYou /> */}
       <ToTop />

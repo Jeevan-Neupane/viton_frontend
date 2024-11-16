@@ -15,6 +15,7 @@ export const VitonLeftDiv = styled.div`
 
 flex:1;
 
+
 `
 
 

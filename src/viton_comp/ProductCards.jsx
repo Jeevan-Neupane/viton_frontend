@@ -4,17 +4,20 @@ import SingleProduct from "./SingleCard";
 
 function WomenDressTop() {
   return (
-    <CategoryProduct>
-      {female_data.map((item) => {
-        return (
-          <SingleProduct
-            key={item.id}
-            item={item}
-            isLoading={false}
-          />
-        );
-      })}
-    </CategoryProduct>
+    <>
+      <h1> Tops</h1>
+      <CategoryProduct>
+        {female_data.map((item) => {
+          return (
+            <SingleProduct
+              key={item.id}
+              item={item}
+              isLoading={false}
+            />
+          );
+        })}
+      </CategoryProduct>
+    </>
   );
 }
 

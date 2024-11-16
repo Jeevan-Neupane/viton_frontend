@@ -44,7 +44,12 @@ function YourImage({ setVtonImg }) {
 
   return (
     <YourImageDiv>
-      {loading && <LoadingScreen>Loading...</LoadingScreen>}{" "}
+      <h1>Your Image</h1>
+      {loading && (
+        <LoadingScreen>
+          <div class='loader'></div>{" "}
+        </LoadingScreen>
+      )}{" "}
       {/* Show loading screen */}
       <ImageInput
         type='file'

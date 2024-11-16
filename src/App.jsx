@@ -29,6 +29,7 @@ import { Div } from "./style/Container";
 import VitonPage from "./pages/vitonpage/VitonPage";
 import TopsPage from "./pages/toppage/TopPage";
 import VitonPage2 from "./pages/vitonpage/VitonPage2";
+import CameraTryPage from "./pages/cameratrypage/CameraTryPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -118,6 +119,11 @@ function App() {
         <Route
           path='tops/:id/try_on'
           element={<VitonPage2 />}
+        />
+
+        <Route
+          path='real_camera_try'
+          element={<CameraTryPage />}
         />
       </Route>
     )

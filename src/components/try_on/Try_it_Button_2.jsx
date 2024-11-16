@@ -11,6 +11,7 @@ function TryItButton2({
 }) {
   const [tryOn] = useTryOnMutation();
   const [isLoading, setIsLoading] = useState(false); // Local loading state
+  const [isError, setIsError] = useState(false);
 
   const [error, setError] = useState(null); // Local error state
 
@@ -38,7 +39,7 @@ function TryItButton2({
       }
     } catch (err) {
       console.error("Error during processing:", err);
-      setError(err);
+      setIsError(err);
     } finally {
       setIsLoading(false); // Stop loading
       setIsResultImgLoading(false); // Stop loading
@@ -51,9 +52,20 @@ function TryItButton2({
         onClick={handleTryItClick}
         disabled={isLoading}
       >
-        {isLoading ? "Processing..." : "Try It 2"}
+        {isLoading ? (
+          <div className='loading'>
+            <span>Processing...</span>
+            <div class='loader'></div>{" "}
+          </div>
+        ) : (
+          "Try It 2"
+        )}
       </ConfirmButton>
-      {error && <div>Error: {error?.message || "An error occurred."}</div>}
+      {isError && (
+        <div className='errordiv'>
+          Error: {error?.message || "An error occurred"}
+        </div>
+      )}
     </ConfirmButtonDiv>
   );
 }
