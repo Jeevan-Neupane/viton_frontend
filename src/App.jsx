@@ -27,6 +27,8 @@ import { getItemFromLocalStorage, login, logout } from "./store/store";
 import LoadngScreen from "./components/loading/LoadngScreen";
 import { Div } from "./style/Container";
 import VitonPage from "./pages/vitonpage/VitonPage";
+import TopsPage from "./pages/toppage/TopPage";
+import VitonPage2 from "./pages/vitonpage/VitonPage2";
 
 function App() {
   const dispatch = useDispatch();
@@ -106,6 +108,16 @@ function App() {
         <Route
           path='products/:category/:id/try_on'
           element={<VitonPage />}
+        />
+
+        <Route
+          path='tops/:id'
+          element={<TopsPage />}
+        />
+
+        <Route
+          path='tops/:id/try_on'
+          element={<VitonPage2 />}
         />
       </Route>
     )

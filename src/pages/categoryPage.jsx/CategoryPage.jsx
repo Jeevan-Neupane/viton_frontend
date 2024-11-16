@@ -4,6 +4,7 @@ import { useFetchCatagoriesProductsQuery } from "../../store/store";
 import { CategoryPageMain } from "../../style/Container";
 import { CategoryProductList, ForYou, ToTop } from "../../components";
 import FemaleSelfProducts from "../../viton_comp/Ladies_dress";
+import WomenDressTop from "../../viton_comp/ProductCards";
 
 function CategoryPage() {
   const { name } = useParams();
@@ -23,6 +24,9 @@ function CategoryPage() {
         data={data?.products}
         isLoading={isFetching || isLoading}
       />
+
+      <WomenDressTop />
+
       {/* <ForYou /> */}
       <ToTop />
     </CategoryPageMain>

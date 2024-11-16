@@ -39,7 +39,11 @@ export const ClotheImageDiv = styled.div`
 `
 
 
-export const ClotheImg = styled.img``
+export const ClotheImg = styled.img`
+width:100%;
+height:100%;
+object-fit:contain;
+`
 
 
 //YourImage

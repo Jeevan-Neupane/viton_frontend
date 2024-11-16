@@ -17,7 +17,6 @@ function Try_it_Button_Self({
     const requestData = {
       person: backgroundUrl,
       cloth: garmImgUrl,
-      text: "upper body",
     };
 
     setIsLoading(true); // Start loading

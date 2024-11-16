@@ -83,6 +83,8 @@ function Product({ item = [], isLoading }) {
     dispatch(setSelctedItemNumber({ id: item.id, selectedNumber: count }));
   }, [count]);
 
+  console.log(item);
+
   return (
     <>
       {!isLoading ? (
