@@ -14,6 +14,7 @@ import ResultImage from "../../components/try_on/ResultImage";
 import Try_it_Buttton from "../../components/try_on/Try_it_Buttton";
 import TryItButton2 from "../../components/try_on/Try_it_Button_2";
 import StoredImages from "../../viton_comp/Stored_Img";
+import Try_it_Button_Self from "../../components/try_on/Try_it_Button_Self";
 
 function VitonPage() {
   let { category, id } = useParams();
@@ -75,6 +76,12 @@ function VitonPage() {
         backgroundUrl={vton_img}
         garmImgUrl={garm_img}
         garmentDesc='shirt '
+        setIsResultImgLoading={setIsResultImgLoading}
+        setResultImg={setResultImg}
+      />
+      <Try_it_Button_Self
+        backgroundUrl={vton_img}
+        garmImgUrl={garm_img}
         setIsResultImgLoading={setIsResultImgLoading}
         setResultImg={setResultImg}
       />

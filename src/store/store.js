@@ -9,6 +9,7 @@ import errorSlice from "./slice/errorSlice";
 import numberSlice from "./slice/numberSlice";
 import { processApi } from "./apis/vitonApi";
 import { tryOnApi } from "./apis/vitonApi2";
+import { vitonApiSelf } from "./apis/vitonApiself";
 const store = configureStore({
     reducer: {
         user: userSlice,
@@ -21,7 +22,7 @@ const store = configureStore({
         numbers: numberSlice
     },
     middleware: (getDefaultMiddleware) => {
-        return getDefaultMiddleware().concat(productApi.middleware).concat(processApi.middleware).concat(tryOnApi.middleware);
+        return getDefaultMiddleware().concat(productApi.middleware).concat(processApi.middleware).concat(tryOnApi.middleware).concat(vitonApiSelf.middleware);
     },
 
 })
